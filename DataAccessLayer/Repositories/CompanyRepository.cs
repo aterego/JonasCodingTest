@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using DataAccessLayer.Model.Interfaces;
 using DataAccessLayer.Model.Models;
@@ -7,11 +8,11 @@ namespace DataAccessLayer.Repositories
 {
     public class CompanyRepository : ICompanyRepository
     {
-	    private readonly IDbWrapper<Company> _companyDbWrapper;
+        private readonly IDbWrapper<Company> _companyDbWrapper;
 
-	    public CompanyRepository(IDbWrapper<Company> companyDbWrapper)
-	    {
-		    _companyDbWrapper = companyDbWrapper;
+        public CompanyRepository(IDbWrapper<Company> companyDbWrapper)
+        {
+            _companyDbWrapper = companyDbWrapper;
         }
 
         public IEnumerable<Company> GetAll()
@@ -28,7 +29,7 @@ namespace DataAccessLayer.Repositories
         {
             var itemRepo = _companyDbWrapper.Find(t =>
                 t.SiteId.Equals(company.SiteId) && t.CompanyCode.Equals(company.CompanyCode))?.FirstOrDefault();
-            if (itemRepo !=null)
+            if (itemRepo != null)
             {
                 itemRepo.CompanyName = company.CompanyName;
                 itemRepo.AddressLine1 = company.AddressLine1;
@@ -45,5 +46,19 @@ namespace DataAccessLayer.Repositories
 
             return _companyDbWrapper.Insert(company);
         }
+
+        //Delete comapny
+        public bool DeleteCompany(string siteId, string companyCode)
+        {
+            var companyToDelete = _companyDbWrapper.Find(t =>
+                t.SiteId.Equals(siteId) && t.CompanyCode.Equals(companyCode))?.FirstOrDefault();
+            if (companyToDelete != null)
+            {
+                return _companyDbWrapper.Delete(t => t.SiteId.Equals(companyToDelete.SiteId) && t.CompanyCode.Equals(companyToDelete.CompanyCode));
+            }
+
+            return false;
+        }
+
     }
 }
