@@ -147,6 +147,10 @@
       <Project>{643e46fe-7bba-4b04-b52d-581d135574a8}</Project>
       <Name>BusinessLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{dba5b7d0-67bf-4609-bedd-824e90cfae56}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
       <Project>{c2fd50a5-7ea4-4e04-a83c-6ade79183bef}</Project>
       <Name>DataAccessLayer</Name>

@@ -48,6 +48,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{dba5b7d0-67bf-4609-bedd-824e90cfae56}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataLayer.Model\DataAccessLayer.Model.csproj">
       <Project>{44867c7e-02d8-40a2-b2c4-0463f31b945e}</Project>
       <Name>DataAccessLayer.Model</Name>
