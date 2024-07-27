@@ -4,6 +4,7 @@ using AutoMapper;
 using BusinessLayer.Model.Models;
 using DataAccessLayer.Model.Interfaces;
 using DataAccessLayer.Model.Models;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
@@ -17,37 +18,37 @@ namespace BusinessLayer.Services
             _companyRepository = companyRepository;
             _mapper = mapper;
         }
-        public IEnumerable<CompanyInfo> GetAllCompanies()
+        public async Task<IEnumerable<CompanyInfo>> GetAllCompaniesAsync()
         {
-            var res = _companyRepository.GetAll();
+            var res = await _companyRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<CompanyInfo>>(res);
         }
 
         //Add Company info
-        public CompanyInfo GetCompanyByCode(string companyCode)
+        public async Task<CompanyInfo> GetCompanyByCodeAsync(string companyCode)
         {
-            var result = _companyRepository.GetByCode(companyCode);
+            var result = await _companyRepository.GetByCodeAsync(companyCode);
             return _mapper.Map<CompanyInfo>(result);
         }
 
         //Add Company
-        public void AddCompany(CompanyInfo company)
+        public async Task AddCompanyAsync(CompanyInfo company)
         {
             var result = _mapper.Map<Company>(company);
-            _companyRepository.SaveCompany(result);
+            await _companyRepository.SaveCompanyAsync(result);
         }
 
         //AVA Update company
-        public void UpdateCompany(CompanyInfo company)
+        public async Task UpdateCompanyAsync(CompanyInfo company)
         {
             var result = _mapper.Map<Company>(company);
-            _companyRepository.SaveCompany(result);
+            await _companyRepository.SaveCompanyAsync(result);
         }
 
         //Delete company
-        public void DeleteCompany(string siteId, string companyCode)
+        public async Task DeleteCompanyAsync(string siteId, string companyCode)
         {
-            _companyRepository.DeleteCompany(siteId, companyCode);
+            await _companyRepository.DeleteCompanyAsync(siteId, companyCode);
         }
     }
 }

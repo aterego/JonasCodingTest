@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
 using BusinessLayer.Model.Interfaces;
@@ -20,43 +21,43 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
         // GET api/<controller>
-        public IEnumerable<CompanyDto> GetAll()
+         public async Task<IEnumerable<CompanyDto>> GetAll()
         {
-            var items = _companyService.GetAllCompanies();
+            var items = await _companyService.GetAllCompaniesAsync();
             return _mapper.Map<IEnumerable<CompanyDto>>(items);
         }
 
         // GET api/<controller>/5
-        public CompanyDto Get(string companyCode)
+        public async Task<CompanyDto> Get(string companyCode)
         {
-            var item = _companyService.GetCompanyByCode(companyCode);
+            var item = await _companyService.GetCompanyByCodeAsync(companyCode);
             return _mapper.Map<CompanyDto>(item);
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public async Task Post([FromBody] string value)
         {
             var companyDto = JsonConvert.DeserializeObject<CompanyDto>(value);
             var company = _mapper.Map<CompanyInfo>(companyDto);
-            _companyService.AddCompany(company);
+            await _companyService.AddCompanyAsync(company);
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public async Task Put(int id, [FromBody] string value)
         {
             var companyDto = JsonConvert.DeserializeObject<CompanyDto>(value);
             var company = _mapper.Map<CompanyInfo>(companyDto);
             var (siteId, companyCode) = DecodeId(id);
             company.SiteId = siteId;
             company.CompanyCode = companyCode;
-            _companyService.UpdateCompany(company);
+            await _companyService.UpdateCompanyAsync(company);
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var (siteId, companyCode) = DecodeId(id);
-            _companyService.DeleteCompany(siteId, companyCode);
+            await _companyService.DeleteCompanyAsync(siteId, companyCode);
         }
 
         private (string siteId, string companyCode) DecodeId(int id)
