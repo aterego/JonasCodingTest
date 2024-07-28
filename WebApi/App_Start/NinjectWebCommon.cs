@@ -3,6 +3,7 @@ using BusinessLayer;
 using DataAccessLayer.Database;
 using DataAccessLayer.Model.Interfaces;
 using DataAccessLayer.Repositories;
+using Common.Logger;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(WebApi.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(WebApi.App_Start.NinjectWebCommon), "Stop")]
@@ -72,6 +73,9 @@ namespace WebApi.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            var logger = new Logger("logfile.log");
+            kernel.Bind<ILogger>().ToConstant(logger);
+
             kernel.Bind<IMapper>().ToMethod(context =>
             {
                 var config = new MapperConfiguration(cfg =>
@@ -83,7 +87,9 @@ namespace WebApi.App_Start
                 return config.CreateMapper();
             }).InSingletonScope();
             kernel.Bind<ICompanyService>().To<CompanyService>();
+            kernel.Bind<IEmployeeService>().To<EmployeeService>();
             kernel.Bind<ICompanyRepository>().To<CompanyRepository>();
+            kernel.Bind<IEmployeeRepository>().To<EmployeeRepository>();
             kernel.Bind(typeof(IDbWrapper<>)).To(typeof(InMemoryDatabase<>));
         }
     }
